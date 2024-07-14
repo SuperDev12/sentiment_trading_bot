@@ -4,15 +4,15 @@ from sentiment_analysis import analyze_sentiment
 from trading_bot import TradingBot
 
 # API keys and other credentials
-NEWS_API_KEY = 'your_news_api_key'
-TWITTER_API_KEY = 'hRW3ZHchRO90O13SKOQqWeJn4'
-TWITTER_API_SECRET_KEY = 'NL1WlSqYNa6iFAlfQEsym7wIkwrjisCToPpOtBH25hQnVM3DGQ'
-TWITTER_ACCESS_TOKEN = '1020559238395879424-bw0kdsSIEF9UGlGXNhv5hNgPl2ZHyS'
-TWITTER_ACCESS_TOKEN_SECRET = '37J0L53drlNecyHQ98MMIZSMjnIFIphSDK1keAJxavXNI'
-UPSTOX_API_KEY = 'your_upstox_api_key'
-UPSTOX_API_SECRET = 'your_upstox_api_secret'
-UPSTOX_REDIRECT_URI = 'your_upstox_redirect_uri'
-UPSTOX_ACCESS_TOKEN = 'your_upstox_access_token'
+NEWS_API_KEY = ''
+TWITTER_API_KEY = ''
+TWITTER_API_SECRET_KEY = ''
+TWITTER_ACCESS_TOKEN = ''
+TWITTER_ACCESS_TOKEN_SECRET = ''
+UPSTOX_API_KEY = ''
+UPSTOX_API_SECRET = ''
+UPSTOX_REDIRECT_URI = ''
+UPSTOX_ACCESS_TOKEN = ''
 
 # Initialize trading bot
 bot = TradingBot(api_key=UPSTOX_API_KEY, api_secret=UPSTOX_API_SECRET, redirect_uri=UPSTOX_REDIRECT_URI, access_token=UPSTOX_ACCESS_TOKEN)
