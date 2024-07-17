@@ -4,14 +4,14 @@ from sentiment_analysis import analyze_sentiment
 from trading_bot import TradingBot
 
 # API keys and other credentials
-NEWS_API_KEY = '082ff6e130fc4ecb84efd99c0f6d70bc'
-REDDIT_CLIENT_ID = 'NuptsGvBxq8hQXV0aDdoSA'
-REDDIT_CLIENT_SECRET = 'migENcjbz2UhRBLArL04p4fA6UN5mQ'
-REDDIT_USER_AGENT = 'python:sentiment_tradingbot:v1.0 (by /u/super-bakchod)'
-UPSTOX_API_KEY = 'cbc66185-898f-4059-9333-1df4dd33d767'
-UPSTOX_API_SECRET = 'xhat00t1rg'
-UPSTOX_REDIRECT_URI = 'http://localhost:8000/callback' 
-UPSTOX_ACCESS_TOKEN = 'your_upstox_access_token'
+NEWS_API_KEY = ''
+REDDIT_CLIENT_ID = ''
+REDDIT_CLIENT_SECRET = ''
+REDDIT_USER_AGENT = ''
+UPSTOX_API_KEY = ''
+UPSTOX_API_SECRET = ''
+UPSTOX_REDIRECT_URI = '' 
+UPSTOX_ACCESS_TOKEN = ''
 # Initialize trading bot
 bot = TradingBot(api_key=UPSTOX_API_KEY, api_secret=UPSTOX_API_SECRET, redirect_uri=UPSTOX_REDIRECT_URI, access_token=UPSTOX_ACCESS_TOKEN)
 
