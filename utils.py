@@ -1,5 +1,5 @@
 import requests
-import tweepy
+import praw
 
 def fetch_news(api_key, query):
     url = f"https://newsapi.org/v2/everything?q={query}&apiKey={api_key}"
@@ -10,14 +10,10 @@ def fetch_news(api_key, query):
         print(f"Error fetching news: {response.status_code}")
         return None
 
-def fetch_tweets(api_key, api_secret_key, access_token, access_token_secret, query):
-    auth = tweepy.OAuthHandler(api_key, api_secret_key)
-    auth.set_access_token(access_token, access_token_secret)
-    api = tweepy.API(auth, wait_on_rate_limit=True)
-
-    try:
-        tweets = api.search_tweets(q=query, lang="en", result_type="recent", count=100)
-        return [tweet.text for tweet in tweets]
-    except Exception as e:
-        print(f"Error fetching tweets: {e}")
-        return []
+def fetch_reddit_posts(client_id, client_secret, user_agent, query):
+    reddit = praw.Reddit(client_id=client_id, client_secret=client_secret, user_agent=user_agent)
+    subreddit = reddit.subreddit("all")
+    posts = []
+    for submission in subreddit.search(query, limit=100):
+        posts.append(submission.title + " " + submission.selftext)
+    return posts

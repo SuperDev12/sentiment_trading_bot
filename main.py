@@ -1,26 +1,24 @@
 import time
-from utils import fetch_news, fetch_tweets
+from utils import fetch_news, fetch_reddit_posts
 from sentiment_analysis import analyze_sentiment
 from trading_bot import TradingBot
 
 # API keys and other credentials
 NEWS_API_KEY = '082ff6e130fc4ecb84efd99c0f6d70bc'
-TWITTER_API_KEY = 'hRW3ZHchRO90O13SKOQqWeJn4'
-TWITTER_API_SECRET_KEY = 'NL1WlSqYNa6iFAlfQEsym7wIkwrjisCToPpOtBH25hQnVM3DGQ'
-TWITTER_ACCESS_TOKEN = '1020559238395879424-bw0kdsSIEF9UGlGXNhv5hNgPl2ZHyS'
-TWITTER_ACCESS_TOKEN_SECRET = '37J0L53drlNecyHQ98MMIZSMjnIFIphSDK1keAJxavXNI'
+REDDIT_CLIENT_ID = 'NuptsGvBxq8hQXV0aDdoSA'
+REDDIT_CLIENT_SECRET = 'migENcjbz2UhRBLArL04p4fA6UN5mQ'
+REDDIT_USER_AGENT = 'python:sentiment_tradingbot:v1.0 (by /u/super-bakchod)'
 UPSTOX_API_KEY = 'cbc66185-898f-4059-9333-1df4dd33d767'
 UPSTOX_API_SECRET = 'xhat00t1rg'
 UPSTOX_REDIRECT_URI = 'http://localhost:8000/callback' 
 UPSTOX_ACCESS_TOKEN = 'your_upstox_access_token'
-
 # Initialize trading bot
 bot = TradingBot(api_key=UPSTOX_API_KEY, api_secret=UPSTOX_API_SECRET, redirect_uri=UPSTOX_REDIRECT_URI, access_token=UPSTOX_ACCESS_TOKEN)
 
 def main():
     query = "reliance stock"
     news_data = fetch_news(NEWS_API_KEY, query)
-    tweets = fetch_tweets(TWITTER_API_KEY, TWITTER_API_SECRET_KEY, TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET, query)
+    reddit_posts = fetch_reddit_posts(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_USER_AGENT, query)
 
     sentiment_scores = []
     if news_data and 'articles' in news_data:
@@ -28,8 +26,8 @@ def main():
             sentiment = analyze_sentiment(article['description'])
             sentiment_scores.append(sentiment)
 
-    for tweet in tweets:
-        sentiment = analyze_sentiment(tweet)
+    for post in reddit_posts:
+        sentiment = analyze_sentiment(post)
         sentiment_scores.append(sentiment)
 
     if sentiment_scores:

@@ -1,1 +1,3 @@
 ERROR:root:Error placing order: {'status': 'error', 'errors': [{'errorCode': 'UDAPI100050', 'message': 'Invalid token used to access API', 'propertyPath': None, 'invalidValue': None, 'error_code': 'UDAPI100050', 'property_path': None, 'invalid_value': None}]}
+ERROR:root:Error placing order: {'status': 'error', 'errors': [{'errorCode': 'UDAPI100050', 'message': 'Invalid token used to access API', 'propertyPath': None, 'invalidValue': None, 'error_code': 'UDAPI100050', 'property_path': None, 'invalid_value': None}]}
+ERROR:root:Error placing order: {'status': 'error', 'errors': [{'errorCode': 'UDAPI100050', 'message': 'Invalid token used to access API', 'propertyPath': None, 'invalidValue': None, 'error_code': 'UDAPI100050', 'property_path': None, 'invalid_value': None}]}
