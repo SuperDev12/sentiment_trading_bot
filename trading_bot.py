@@ -1,135 +1,96 @@
 import requests
-import logging
-
-# Initialize logging
-logging.basicConfig(filename='logs/trading_bot.log', level=logging.INFO)
-
 class TradingBot:
-    def __init__(self, api_key, api_secret, redirect_uri, access_token):
+    def __init__(self, api_key, access_token):
         self.api_key = api_key
-        self.api_secret = api_secret
-        self.redirect_uri = redirect_uri
         self.access_token = access_token
-        self.base_url = "https://api.upstox.com/v2"
-        self.headers = {
-            'Accept': 'application/json',
-            'Authorization': f'Bearer {self.access_token}'
-        }
+        self.base_url = "https://api-v2.upstox.com/"
 
-    def place_order(self, symbol, action, quantity):
-        url = f"{self.base_url}/order/place"
+    def place_order(self, symbol, transaction_type, quantity):
+        url = self.base_url + "order/place"
+        headers = {
+            'Authorization': f'Bearer {self.access_token}',
+            'Content-Type': 'application/json'
+        }
         payload = {
-            "transaction_type": "B" if action == "BUY" else "S",
-            "symbol": symbol,
-            "quantity": quantity,
-            "order_type": "MKT",
-            "product": "I"
+            'variety': 'regular',
+            'tradingsymbol': symbol,
+            'symbol_token': 'your_symbol_token',
+            'transaction_type': transaction_type,
+            'quantity': quantity,
+            'order_type': 'market',
+            'product': 'delivery'
         }
 
-        try:
-            response = requests.post(url, headers=self.headers, json=payload)
-            response_data = response.json()
-            if response.status_code == 200:
-                order_id = response_data.get("order_id")
-                logging.info(f"Order placed successfully: {order_id}")
-                return order_id
-            else:
-                logging.error(f"Error placing order: {response_data}")
-                return None
-        except Exception as e:
-            logging.error(f"Error placing order: {str(e)}")
+        response = requests.post(url, json=payload, headers=headers)
+        if response.status_code == 200:
+            return response.json().get('order_id')
+        else:
+            print(f"Error placing order: {response.text}")
             return None
 
-    def modify_order(self, order_id, quantity=None, price=None):
-        url = f"{self.base_url}/order/modify"
-        payload = {
-            "order_id": order_id,
-            "quantity": quantity,
-            "price": price
-        }
-        
+    def modify_order(self, order_id, quantity):
         try:
-            response = requests.put(url, headers=self.headers, json=payload)
-            return response.json()
+            order = self.upstox.modify_order(
+                order_id=order_id,
+                quantity=quantity
+            )
+            return order
         except Exception as e:
-            logging.error(f"Error modifying order: {str(e)}")
+            print(f"Error modifying order: {e}")
             return None
 
     def cancel_order(self, order_id):
-        url = f"{self.base_url}/order/cancel"
-        payload = {
-            "order_id": order_id
-        }
-        
         try:
-            response = requests.delete(url, headers=self.headers, json=payload)
-            return response.json()
+            order = self.upstox.cancel_order(order_id)
+            return order
         except Exception as e:
-            logging.error(f"Error canceling order: {str(e)}")
+            print(f"Error canceling order: {e}")
             return None
 
     def get_order_details(self, order_id):
-        url = f"{self.base_url}/order/details"
-        payload = {
-            "order_id": order_id
-        }
-        
         try:
-            response = requests.get(url, headers=self.headers, json=payload)
-            return response.json()
+            order_details = self.upstox.get_order_details(order_id)
+            return order_details
         except Exception as e:
-            logging.error(f"Error getting order details: {str(e)}")
+            print(f"Error fetching order details: {e}")
             return None
 
     def get_order_history(self):
-        url = f"{self.base_url}/order/history"
-        
         try:
-            response = requests.get(url, headers=self.headers)
-            return response.json()
+            order_history = self.upstox.get_order_history()
+            return order_history
         except Exception as e:
-            logging.error(f"Error getting order history: {str(e)}")
+            print(f"Error fetching order history: {e}")
             return None
 
     def get_order_book(self):
-        url = f"{self.base_url}/order/retrieve-all"
-        
         try:
-            response = requests.get(url, headers=self.headers)
-            return response.json()
+            order_book = self.upstox.get_order_book()
+            return order_book
         except Exception as e:
-            logging.error(f"Error getting order book: {str(e)}")
+            print(f"Error fetching order book: {e}")
             return None
 
     def get_trades(self):
-        url = f"{self.base_url}/order/trades/get-trades-for-day"
-        
         try:
-            response = requests.get(url, headers=self.headers)
-            return response.json()
+            trades = self.upstox.get_trades()
+            return trades
         except Exception as e:
-            logging.error(f"Error getting trades: {str(e)}")
+            print(f"Error fetching trades: {e}")
             return None
 
     def get_order_trades(self, order_id):
-        url = f"{self.base_url}/order/trades"
-        payload = {
-            "order_id": order_id
-        }
-        
         try:
-            response = requests.get(url, headers=self.headers, json=payload)
-            return response.json()
+            order_trades = self.upstox.get_order_trades(order_id)
+            return order_trades
         except Exception as e:
-            logging.error(f"Error getting order trades: {str(e)}")
+            print(f"Error fetching order trades: {e}")
             return None
 
     def get_trade_history(self):
-        url = f"{self.base_url}/charges/historical-trades"
-        
         try:
-            response = requests.get(url, headers=self.headers)
-            return response.json()
+            trade_history = self.upstox.get_trade_history()
+            return trade_history
         except Exception as e:
-            logging.error(f"Error getting trade history: {str(e)}")
+            print(f"Error fetching trade history: {e}")
             return None
