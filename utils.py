@@ -15,3 +15,12 @@ def fetch_reddit_posts(client_id, client_secret, user_agent, query):
     for submission in subreddit.search(query, limit=10):
         posts.append(submission.title + " " + submission.selftext)
     return posts
+
+def fetch_market_data(api_key, symbol):
+    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&apikey=QJUPAU6QRD2ZSL0F"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error fetching market data: {response.status_code}")
+        return None

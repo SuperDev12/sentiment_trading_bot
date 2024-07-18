@@ -1,8 +1,8 @@
 import time
-from utils import fetch_news, fetch_reddit_posts
+from utils import fetch_news, fetch_reddit_posts, fetch_market_data
 from sentiment_analysis import analyze_sentiment
 from trading_bot import TradingBot
-import requests
+from database import insert_sentiment, fetch_historical_sentiment
 
 # API keys and other credentials
 NEWS_API_KEY = '082ff6e130fc4ecb84efd99c0f6d70bc'
@@ -14,12 +14,6 @@ ALPHA_VANTAGE_API_KEY = 'QJUPAU6QRD2ZSL0F'
 # Initialize trading bot
 bot = TradingBot(api_key=ALPHA_VANTAGE_API_KEY)
 
-def fetch_market_data(api_key, symbol):
-    url = f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=QJUPAU6QRD2ZSL0F'
-    response = requests.get(url)
-    data = response.json()
-    return data
-
 def main():
     query = "reliance stock"
     news_data = fetch_news(NEWS_API_KEY, query)
@@ -30,10 +24,15 @@ def main():
         for article in news_data['articles']:
             sentiment = analyze_sentiment(article['description'])
             sentiment_scores.append(sentiment)
+            insert_sentiment('news', article['description'], sentiment)
 
     for post in reddit_posts:
         sentiment = analyze_sentiment(post)
         sentiment_scores.append(sentiment)
+        insert_sentiment('reddit', post, sentiment)
+
+    historical_sentiment = fetch_historical_sentiment()
+    print("Historical Sentiment Data:", historical_sentiment)
 
     if sentiment_scores:
         average_sentiment = sum(sentiment_scores) / len(sentiment_scores)
@@ -41,17 +40,18 @@ def main():
         # Fetch market data from Alpha Vantage
         symbol = "RELIANCE.BSE"
         market_data = fetch_market_data(ALPHA_VANTAGE_API_KEY, symbol)
-        
-        # Example to extract some data (modify based on your requirements)
         print(market_data)
 
+        stop_loss = 2000  # Example value
+        take_profit = 2200  # Example value
+
         if average_sentiment > 0:
-            order_id = bot.place_order("RELIANCE", "BUY", 1)
+            order_id = bot.place_order(symbol, "BUY", 1, stop_loss, take_profit)
             if order_id:
                 bot.modify_order(order_id, quantity=2)
                 bot.cancel_order(order_id)
         else:
-            order_id = bot.place_order("RELIANCE", "SELL", 1)
+            order_id = bot.place_order(symbol, "SELL", 1, stop_loss, take_profit)
             if order_id:
                 bot.modify_order(order_id, quantity=2)
                 bot.cancel_order(order_id)
