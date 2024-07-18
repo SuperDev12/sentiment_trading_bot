@@ -1,96 +1,40 @@
-import requests
 class TradingBot:
-    def __init__(self, api_key, access_token):
+    def __init__(self, api_key):
         self.api_key = api_key
-        self.access_token = access_token
-        self.base_url = "https://api-v2.upstox.com/"
 
-    def place_order(self, symbol, transaction_type, quantity):
-        url = self.base_url + "order/place"
-        headers = {
-            'Authorization': f'Bearer {self.access_token}',
-            'Content-Type': 'application/json'
-        }
-        payload = {
-            'variety': 'regular',
-            'tradingsymbol': symbol,
-            'symbol_token': 'your_symbol_token',
-            'transaction_type': transaction_type,
-            'quantity': quantity,
-            'order_type': 'market',
-            'product': 'delivery'
-        }
-
-        response = requests.post(url, json=payload, headers=headers)
-        if response.status_code == 200:
-            return response.json().get('order_id')
-        else:
-            print(f"Error placing order: {response.text}")
-            return None
+    def place_order(self, symbol, order_type, quantity):
+        # Simulate placing an order
+        print(f"Placing {order_type} order for {quantity} shares of {symbol}.")
+        return "order_id"
 
     def modify_order(self, order_id, quantity):
-        try:
-            order = self.upstox.modify_order(
-                order_id=order_id,
-                quantity=quantity
-            )
-            return order
-        except Exception as e:
-            print(f"Error modifying order: {e}")
-            return None
-
+        # Simulate modifying an order
+        print(f"Modifying order {order_id} to {quantity} shares.")
+    
     def cancel_order(self, order_id):
-        try:
-            order = self.upstox.cancel_order(order_id)
-            return order
-        except Exception as e:
-            print(f"Error canceling order: {e}")
-            return None
-
+        # Simulate canceling an order
+        print(f"Cancelling order {order_id}.")
+    
     def get_order_details(self, order_id):
-        try:
-            order_details = self.upstox.get_order_details(order_id)
-            return order_details
-        except Exception as e:
-            print(f"Error fetching order details: {e}")
-            return None
-
+        # Simulate fetching order details
+        return {"order_id": order_id, "status": "filled"}
+    
     def get_order_history(self):
-        try:
-            order_history = self.upstox.get_order_history()
-            return order_history
-        except Exception as e:
-            print(f"Error fetching order history: {e}")
-            return None
-
+        # Simulate fetching order history
+        return [{"order_id": "order_id", "status": "filled"}]
+    
     def get_order_book(self):
-        try:
-            order_book = self.upstox.get_order_book()
-            return order_book
-        except Exception as e:
-            print(f"Error fetching order book: {e}")
-            return None
-
+        # Simulate fetching order book
+        return [{"symbol": "RELIANCE", "quantity": 1}]
+    
     def get_trades(self):
-        try:
-            trades = self.upstox.get_trades()
-            return trades
-        except Exception as e:
-            print(f"Error fetching trades: {e}")
-            return None
-
+        # Simulate fetching trades
+        return [{"trade_id": "trade_id", "symbol": "RELIANCE"}]
+    
     def get_order_trades(self, order_id):
-        try:
-            order_trades = self.upstox.get_order_trades(order_id)
-            return order_trades
-        except Exception as e:
-            print(f"Error fetching order trades: {e}")
-            return None
-
+        # Simulate fetching order trades
+        return [{"trade_id": "trade_id", "order_id": order_id}]
+    
     def get_trade_history(self):
-        try:
-            trade_history = self.upstox.get_trade_history()
-            return trade_history
-        except Exception as e:
-            print(f"Error fetching trade history: {e}")
-            return None
+        # Simulate fetching trade history
+        return [{"trade_id": "trade_id", "symbol": "RELIANCE"}]
